@@ -1,13 +1,19 @@
 {
-  "name": "Julia playground",
-  "image": "ghcr.io/julia-vscode/julia-devcontainer",
+  "name": "julia-playground",
+  "dockerComposeFile": ["docker-compose.yml"],
+  "service": "workspace",
+  "workspaceFolder": "/workspace",
   "customizations": {
-    "vscode": {
-      "extensions": [
-        "julialang.language-julia"
-      ]
-    }
+      "vscode": {
+          "extensions": [
+              "EditorConfig.EditorConfig",
+              "shardulm94.trailing-spaces",
+              "julialang.language-julia",
+              "ms-toolsai.jupyter",
+              "ms-toolsai.vscode-jupyter-powertoys"
+          ]
+      },
+      "postCreateCommand": "julia -e 'using Pkg; Pkg.add(\"IJulia\")'"
   },
-  "postCreateCommand": "/julia-devcontainer-scripts/postcreate.jl",
   "remoteUser": "vscode"
 }
