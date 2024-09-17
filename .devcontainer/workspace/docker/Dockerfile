@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/base:bullseye
+FROM mcr.microsoft.com/devcontainers/base:bookworm
 
 ARG USER=vscode
 ARG USER_ID=1000
@@ -11,7 +11,7 @@ RUN apt-get update -y \
     curl \
     gnupg \
     lsb-release \
-    python3-pip \
+    python3.11-venv \
     expect \
     && apt-get autoremove -y \
     && apt-get clean \
@@ -21,6 +21,8 @@ RUN if ! getent group $GROUP_ID > /dev/null 2>&1; then groupadd -g $GROUP_ID myg
 RUN if ! getent passwd $USER_ID > /dev/null 2>&1; then useradd -m -u $USER_ID -g $GROUP_ID $USER; fi
 
 USER $USER_ID
-
-RUN /usr/bin/python3 -m pip install ipykernel -U --user --force-reinstall
-RUN expect -c 'spawn bash -c "curl -fsSL https://install.julialang.org | sh"; expect "Proceed"; send -- "\r"; expect eof'
+RUN python3 -m venv ~/.venv/myenv \
+    && echo "source ~/.venv/myenv/bin/activate" >> ~/.bashrc \
+    && /bin/bash -c "source ~/.venv/myenv/bin/activate; pip install --upgrade pip; pip install jupyterlab matplotlib; ipython kernel install --user --name=myenv" \
+    && expect -c 'spawn bash -c "curl -fsSL https://install.julialang.org | sh"; expect "Proceed"; send -- "\r"; expect eof' \
+    && ~/.juliaup/bin/julia -e 'using Pkg; Pkg.update(); Pkg.add("IJulia")'
