@@ -15,9 +15,11 @@
       }
   },
   "features": {
+    "ghcr.io/julialang/devcontainer-features/julia:1": {
+    },
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
     }
   },
-  // "postCreateCommand": ".devcontainer/postCreateCommand.sh",
+  "postCreateCommand": ".devcontainer/postCreateCommand.sh",
   "remoteUser": "vscode"
 }

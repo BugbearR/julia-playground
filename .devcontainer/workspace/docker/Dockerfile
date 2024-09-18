@@ -23,6 +23,4 @@ RUN if ! getent passwd $USER_ID > /dev/null 2>&1; then useradd -m -u $USER_ID -g
 USER $USER_ID
 RUN python3 -m venv ~/.venv/myenv \
     && echo "source ~/.venv/myenv/bin/activate" >> ~/.bashrc \
-    && /bin/bash -c "source ~/.venv/myenv/bin/activate; pip install --upgrade pip; pip install jupyterlab matplotlib; ipython kernel install --user --name=myenv" \
-    && expect -c 'spawn bash -c "curl -fsSL https://install.julialang.org | sh"; expect "Proceed"; send -- "\r"; expect eof' \
-    && ~/.juliaup/bin/julia -e 'using Pkg; Pkg.update(); Pkg.add("IJulia")'
+    && /bin/bash -c "source ~/.venv/myenv/bin/activate; pip install --upgrade pip; pip install jupyterlab matplotlib; ipython kernel install --user --name=myenv"
